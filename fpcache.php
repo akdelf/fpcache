@@ -1,7 +1,13 @@
-<?
+<?php
 	
+	/**
+	* config default 
+	*/
 	if (!defined(FPTIME))
 		define('FPTIME', 1800); //по умалчанию 30 минут
+
+	if (!defined(FPDIR))
+		define('FPDIR', '/cache/html/');
 
 
 	/* получаем URI */
@@ -18,30 +24,34 @@
 		$get_cache_line = '';
 
 	if (URI !== '') 
-		$fcache = CPATH.URI;
+		$fpcache = FPDIR.URI;
 	else 	
-		$fcache =  CPATH.'index';  //определяем файл кеша гл страницы
+		$fpcache =  FPDIR.'index';  //определяем файл кеша гл страницы
 		
 	if 	($get_cache_line !== '')
 		$fcache .= $get_cache_line;
 	
-	define('FCACHE', $fcache.'.html');	
+	define('FPCACHE', $fpcache.'.html'); //текущий файл кеширования	
 
 
 	if (sizeof($_POST) == 0) { //если пришли данные из формы кэш не нужен
 		if (LINKCACHE > 0) {
-			if (file_exists(FCACHE) and ((filemtime(FCACHE) + LINKCACHE) > $_SERVER['REQUEST_TIME'])){
-				echo file_get_contents(FCACHE);
+			if (file_exists(FCACHE) and ((filemtime(FCACHE) + FPTIME) > $_SERVER['REQUEST_TIME'])){
+				echo file_get_contents(FCACHE); //выводим файл кеша и обрываем выполнение скрипта
 				exit;
 			}	
 		}
 	}
 
-
 	header("X-Accel-Expires: ".FPTIME); //nginx
+
+	if (FPTIME == 0) { // no cache
+		header("Cache-Control: no-store"); 
+		header("Expires: " . date("r")); 
+	}	
 	
 
-	//save page
+	//save cache page
 	function fp_save(){
 
 	}
