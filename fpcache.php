@@ -16,11 +16,15 @@
 
 
 	/* получаем URI */
-	$fpc_uri = trim($_SERVER['REQUEST_URI']); 
-	$fpc_uri = trim($uri,'/');
+	if (isset($_SERVER['REQUEST_URI'])) {
+		$fpc_uri = trim($_SERVER['REQUEST_URI']); 
+		$fpc_uri = trim($fpc_uri,'/');
+	}
+	else
+		$fpc_uri = '';	
 
 	/* обработка GET */
-	if ($_SERVER['QUERY_STRING'] !== ''){ 
+	if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] !== ''){ 
 		$fpc_get_line = str_replace('=','_', $_SERVER['QUERY_STRING']);
 		$fpc_query = mb_strpos($fpc_uri, '?');
 		$fpc_uri = mb_substr($fpc_uri, 0, $fpc_query);
@@ -63,7 +67,14 @@
 
 
 	function fpc_save($content = ''){
+		
+		if (!is_dir(FPCDIR)){
+			if (!mkdir(FPCDIR, 0700, True))
+				return False;
+		}		
+		
 		return file_put_contents(FPCFILE, $content);
+	
 	}
 
 
@@ -72,9 +83,11 @@
 		
 		ob_start();
 			include($include);
-			$result = trim(ob_get_contents());
+			$content = trim(ob_get_contents());
 		ob_end_clean();	
 		
-		return file_put_contents(FPCFILE, $result); //saved cache
+		fpc_save($content); //saved cache
+
+		return $content;
 
 	}

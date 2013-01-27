@@ -1,7 +1,5 @@
 <?php
 
-	define('FPCTIME', 300); //cache time
-
 	require '../fpcache.php';
 
 	ob_start();
@@ -17,9 +15,7 @@
 
 	$content = trim(ob_get_contents());
 	ob_end_clean();	
-
 	
-	# file_put_contents(FPCFILE, $result); //code version
+	echo $content;
 
-	fpc_save($content); // function short version 
-
+	fpc_save($content);

@@ -16,7 +16,7 @@
 			<h1>EXAMPLE FULL PAGE CACHE</h1>
 			<ul>
 				<?foreach ($names as $name):?>
-					<?=$name?>
+					<li><?=$name?></li>
 				<?endforeach?>
 			</ul>	
 		</body>
