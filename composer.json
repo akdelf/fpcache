@@ -1,0 +1,16 @@
+{
+    "name": "full page cache",
+    "description": "full page cache minimal",
+    "keywords": ["cache"],
+    "license": "MIT",
+    "type": "bundle",
+    "authors": [{"name": "AK Delfin", "email": "ak.delf@gmail.com"}],
+    "require": {
+        "symfony/monolog-bundle": "*",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-0": {"Staffim\\SplunkBundle\\": ""}
+    },
+    "target-dir" : "Staffim/SplunkBundle"
+}
