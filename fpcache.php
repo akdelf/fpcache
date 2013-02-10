@@ -11,6 +11,10 @@
 		define('FPCDIR', 'cache/html/');
 
 
+	/*
+	* time 
+	* cache - mode cache only
+	*/
 	if (!defined('FPCMODE'))
 		define('FPCMODE', 'time');
 
@@ -45,17 +49,20 @@
 	if (sizeof($_POST) == 0) { //если пришли данные из формы кэш не нужен
 		
 		if (FPCTIME > 0) {
-			
-			header("X-Accel-Expires: ".FPCTIME); //nginx
-			
+									
 			if (file_exists(FPCFILE)) {
+				
 				
 				if (FPCMODE == 'cache') {
 					echo file_get_contents(FPCFILE);
 					exit;
 				}
 			
-				if (filemtime(FPCFILE) + FPCTIME > $_SERVER['REQUEST_TIME']){
+				$fp_endtime = filemtime(FPCFILE) + FPCTIME;
+
+				if ($fp_endtime > $_SERVER['REQUEST_TIME']){
+					$fp_rest = $fp_endtime - $_SERVER['REQUEST_TIME'];
+					fpc_headers($fp_rest);
 					echo file_get_contents(FPCFILE); //выводим файл кеша и обрываем выполнение скрипта
 					exit;
 				}	
@@ -66,28 +73,41 @@
 	}
 
 
-	function fpc_save($content = ''){
+	/*
+	* FPCACHE saved function
+	*/
+
+	function fpc_headers($time){
+		header("X-Accel-Expires: ".$time); //nginx
+	} 
+
+
+	function fpc_save($content = '', $key = ''){
 		
-		if (!is_dir(FPCDIR)){
-			if (!mkdir(FPCDIR, 0700, True))
+		$dir = dirname(FPCFILE); 
+		
+		if (!is_dir($dir)){
+			if (!mkdir($dir, 0777, True))
 				return False;
 		}		
-		
+				
 		return file_put_contents(FPCFILE, $content);
+
 	
 	}
 
 
 	//savepage in html
-	function fpc_save_include($include) {
-		
+	function fpc_save_include($include, $print = True) {
+			
 		ob_start();
 			include($include);
 			$content = trim(ob_get_contents());
 		ob_end_clean();	
 		
-		fpc_save($content); //saved cache
-
-		return $content;
+		if ($print)
+			echo $content;
+		
+		return fpc_save($content, $print); //saved cache;
 
 	}
