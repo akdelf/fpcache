@@ -1,7 +1,7 @@
 {
     "name": "akdelf/fpcache",
-    "description": "php array save to file",
-    "keywords": ["cache","php","array"],
+    "description": "web fullpage save to html file",
+    "keywords": ["cache","php","file"],
     "homepage": "http://github.com/akdelf/fpcache",
     "license": "Zlib",
     "authors": [
