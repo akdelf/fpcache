@@ -8,7 +8,7 @@
 		define('FPCTIME', 1800); //по умoлчанию 30 минут
 
 	if (!defined('FPCDIR'))
-		define('FPCDIR', __DIR__.'/cache/html/');
+		define('FPCDIR', $_SERVER['DOCUMENT ROOT'].'/cache/');
 
 
 	/*
@@ -37,9 +37,9 @@
 		$fpc_get_line = '';
 
 	if ($fpc_uri !== '') 
-		$fpcache = FPCDIR.$fpc_uri;
+		$fpcache = FPCDIR.'html/'.$fpc_uri;
 	else 	
-		$fpcache =  FPCDIR.'index';  //определяем файл кеша гл страницы
+		$fpcache =  FPCDIR.'html/'.'index';  //определяем файл кеша гл страницы
 
 	if 	($fpc_get_line !== '')
 		$fpcache .= $fpc_get_line;
@@ -71,7 +71,6 @@
 		}
 
 	//}
-
 
 	/*
 	* FPCACHE saved function
@@ -110,4 +109,24 @@
 		
 		return fpc_save($content, $print); //saved cache;
 
+	}
+
+
+	function fpc_file($file, $time = 3600) {
+		
+		$fcache = FPCDIR.'piece/'.$name.'.html';
+		
+		if (filemtime($fpiece)+$time > $_SERVER['REQUEST_TIME'] && file_exists($file))
+			return file_get_contents($file); 
+		else {
+			
+			ob_start();
+			include($file);
+			$result = trim(ob_get_contents());
+			ob_end_clean();
+			
+			file_put_contents($fpiece, $result);
+			return $result;
+		}
+	
 	}
