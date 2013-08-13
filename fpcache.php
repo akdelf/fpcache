@@ -11,14 +11,6 @@
 		define('FPCDIR', $_SERVER['DOCUMENT ROOT'].'/cache/');
 
 
-	/*
-	* time 
-	* cache - mode cache only
-	*/
-	if (!defined('FPCMODE'))
-		define('FPCMODE', 'time');
-
-
 	/* получаем URI */
 	if (isset($_SERVER['REQUEST_URI'])) {
 		$fpc_uri = trim($_SERVER['REQUEST_URI']); 
@@ -46,14 +38,13 @@
 
 	define('FPCFILE', $fpcache.'.html'); //текущий файл кеширования	
 
-	if (sizeof($_POST) == 0) { //если пришли данные из формы кэш не нужен
+	//if (sizeof($_POST) == 0) { //если пришли данные из формы кэш не нужен
 		
 		if (FPCTIME > 0) {
 									
 			if (file_exists(FPCFILE)) {
-				
-				
-				if (FPCMODE == 'cache') {
+								
+				if (FPCTIME == -1) {
 					echo file_get_contents(FPCFILE);
 					exit;
 				}
@@ -68,9 +59,10 @@
 				}	
 		
 			}
+
 		}
 
-	}
+	//}
 
 	/*
 	* FPCACHE saved function
