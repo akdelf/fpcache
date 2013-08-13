@@ -46,7 +46,7 @@
 
 	define('FPCFILE', $fpcache.'.html'); //текущий файл кеширования	
 
-	//if (sizeof($_POST) == 0) { //если пришли данные из формы кэш не нужен
+	if (sizeof($_POST) == 0) { //если пришли данные из формы кэш не нужен
 		
 		if (FPCTIME > 0) {
 									
@@ -70,7 +70,7 @@
 			}
 		}
 
-	//}
+	}
 
 	/*
 	* FPCACHE saved function
