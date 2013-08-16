@@ -38,7 +38,7 @@
 
 	define('FPCFILE', $fpcache.'.html'); //текущий файл кеширования	
 
-	//if (sizeof($_POST) == 0) { //если пришли данные из формы кэш не нужен
+	if (sizeof($_POST) == 0) { //если пришли данные из формы кэш не нужен
 		
 		if (FPCTIME > 0) {
 									
@@ -62,8 +62,9 @@
 
 		}
 
-	//}
+	}
 
+	
 	/*
 	* FPCACHE saved function
 	*/
@@ -104,12 +105,12 @@
 	}
 
 
-	function fpc_file($file, $time = 3600) {
+	function fpc_file($key, $time = 3600) {
 		
-		$fcache = FPCDIR.'piece/'.$name.'.html';
+		$fcache = FPCDIR.'blocks/'.$key.'.html';
 		
-		if (filemtime($fpiece)+$time > $_SERVER['REQUEST_TIME'] && file_exists($file))
-			return file_get_contents($file); 
+		if (filemtime($fpiece)+$time > $_SERVER['REQUEST_TIME'] && file_exists($fcache))
+			return file_get_contents($fcache); 
 		else {
 			
 			ob_start();
