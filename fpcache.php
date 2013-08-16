@@ -64,7 +64,7 @@
 
 	}
 
-	
+
 	/*
 	* FPCACHE saved function
 	*/
@@ -105,6 +105,24 @@
 	}
 
 
+	function fpc_array($key, $value) {
+
+		$fcache = FPCDIR.'export/'.md5($key).'.json';
+
+		if (is_array($value))  
+			return file_get_contents($fcache, json_encode($value)); 
+		
+		elseif (is_int($value)) {
+			if (file_exists($fcache) && filemtime($fcache)+$value > $_SERVER['REQUEST_TIME'])
+				return json_decode($fcache, True);
+		}
+		
+		return null;
+
+	}
+
+
+
 	function fpc_file($key, $time = 3600) {
 		
 		$fcache = FPCDIR.'blocks/'.$key.'.html';
@@ -120,6 +138,7 @@
 			
 			file_put_contents($fpiece, $result);
 			return $result;
+
 		}
 	
 	}
