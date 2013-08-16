@@ -110,11 +110,12 @@
 		$fcache = FPCDIR.'export/'.md5($key).'.json';
 
 		if (is_array($value))  
-			return file_get_contents($fcache, json_encode($value)); 
+			return file_put_contents($fcache, json_encode($value)); 
 		
 		elseif (is_int($value)) {
-			if (file_exists($fcache) && filemtime($fcache)+$value > $_SERVER['REQUEST_TIME'])
-				return json_decode($fcache, True);
+			if (file_exists($fcache) && filemtime($fcache)+$value > $_SERVER['REQUEST_TIME']){
+				return json_decode(file_get_contents($fcache));
+			}
 		}
 		
 		return null;
