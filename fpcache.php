@@ -74,19 +74,24 @@
 	} 
 
 
-	function fpc_save($content = '', $key = ''){
-		
-		$dir = dirname(FPCFILE); 
+	function fpc_dir($dir){
 		
 		if (!is_dir($dir)){
 			if (!mkdir($dir, 0777, True))
 				return False;
-		}		
-				
-		return file_put_contents(FPCFILE, $content);
+		}
 
+		return True;	
+	}
+
+
+	function fpc_save($content = '', $key = ''){
+		
+		fpc_dir(dirname(FPCFILE));
+		return file_put_contents(FPCFILE, $content);
 	
 	}
+
 
 
 	//savepage in html
@@ -107,6 +112,12 @@
 
 	function fpc_array($key, $value, $test = False) {
 
+		
+		//create directory
+		$ex_dir = FPCDIR.'export/';
+		fpc_dir($ex_dir);
+
+		//cache file
 		$fcache = FPCDIR.'export/'.md5($key).'.json';
 
 		if (is_array($value)) {  
