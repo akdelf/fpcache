@@ -8,9 +8,9 @@
 		define('FPCTIME', 1800); //по умoлчанию 30 минут
 
 	if (!defined('FPCDIR'))
-		define('FPCDIR', $_SERVER['DOCUMENT ROOT'].'/cache/');
+		define('FPCDIR', $_SERVER['DOCUMENT_ROOT'].'/cache/');
 
-
+	
 	/* получаем URI */
 	if (isset($_SERVER['REQUEST_URI'])) {
 		$fpc_uri = trim($_SERVER['REQUEST_URI']); 
@@ -74,6 +74,8 @@
 	} 
 
 
+	
+	// create cache directory
 	function fpc_dir($dir){
 		
 		if (!is_dir($dir)){
@@ -88,13 +90,15 @@
 	function fpc_save($content = '', $key = ''){
 		
 		fpc_dir(dirname(FPCFILE));
+
+		echo fpc_dir;
 		return file_put_contents(FPCFILE, $content);
 	
 	}
 
 
 
-	//savepage in html
+	// savepage in html
 	function fpc_save_include($include, $print = True) {
 			
 		ob_start();
@@ -113,11 +117,11 @@
 	function fpc_array($key, $value, $test = False) {
 
 		
-		//create directory
+		// create directory
 		$ex_dir = FPCDIR.'export/';
 		fpc_dir($ex_dir);
 
-		//cache file
+		// cache file
 		$fcache = FPCDIR.'export/'.md5($key).'.json';
 
 		if (is_array($value)) {  
