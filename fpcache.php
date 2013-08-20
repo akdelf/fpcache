@@ -40,7 +40,7 @@
 
 	if (sizeof($_POST) == 0) { //если пришли данные из формы кэш не нужен
 		
-		if (FPCTIME > 0) {
+		if (FPCTIME !== 0) {
 									
 			if (file_exists(FPCFILE)) {
 								
@@ -105,19 +105,27 @@
 	}
 
 
-	function fpc_array($key, $value) {
+	function fpc_array($key, $value, $test = False) {
 
 		$fcache = FPCDIR.'export/'.md5($key).'.json';
 
-		if (is_array($value))  
-			return file_put_contents($fcache, json_encode($value)); 
+		if (is_array($value)) {  
+			return file_put_contents($fcache, json_encode($value));
+		}	 
 		
 		elseif (is_int($value)) {
+			
 			if (file_exists($fcache) && filemtime($fcache)+$value > $_SERVER['REQUEST_TIME']){
-				return json_decode(file_get_contents($fcache));
+				if ($test)
+					echo "FPCACHE\CACHE:\n\n";
+				return json_decode(file_get_contents($fcache), True);
 			}
+
 		}
 		
+		if ($test)
+			echo "FPCACHE\ORIGINAL:\n\n";
+
 		return null;
 
 	}
