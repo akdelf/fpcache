@@ -90,8 +90,6 @@
 	function fpc_save($content = '', $key = ''){
 		
 		fpc_dir(dirname(FPCFILE));
-
-		echo fpc_dir;
 		return file_put_contents(FPCFILE, $content);
 	
 	}
