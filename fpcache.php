@@ -48,8 +48,7 @@
 			header("Cache-Control: max-age="+FPCTIME);
 			header("X-Accel-Expires: "+FPCTIME);
 
-			echo FPCFILE;
-
+			
 			if (file_exists(FPCFILE)) {
 								
 				if (FPCTIME == -1) {
