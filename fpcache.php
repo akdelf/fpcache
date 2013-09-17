@@ -38,12 +38,13 @@
 
 	define('FPCFILE', $fpcache.'.html'); //текущий файл кеширования	
 
-	if (sizeof($_POST) == 0) { //если пришли данные из формы кэш не нужен
+	if (sizeof($_POST) == 0 or FPCTIME == -1) { //если пришли данные из формы кэш не нужен
 		
 		if (FPCTIME !== 0) {
 									
 			header("Expires: ".gmdate("D, d M Y H:i:s", time()+FPCTIME)." GMT");
 			header("Cache-Control: max-age="+FPCTIME);
+			header("X-Accel-Expires: "+FPCTIME);
 
 			if (file_exists(FPCFILE)) {
 								
