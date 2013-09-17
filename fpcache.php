@@ -42,6 +42,9 @@
 		
 		if (FPCTIME !== 0) {
 									
+			header("Expires: ".gmdate("D, d M Y H:i:s", time()+FPCTIME)." GMT");
+			header("Cache-Control: max-age="+FPCTIME);
+
 			if (file_exists(FPCFILE)) {
 								
 				if (FPCTIME == -1) {
