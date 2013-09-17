@@ -43,10 +43,14 @@
 		if (FPCTIME !== 0) {
 									
 	
+			if (FPCTIME == -1) // время кеширования для заголовков
+				$htime = 1200;
+			else
+				$htime = FPCTIME;
 
-			header("Expires: ".gmdate("D, d M Y H:i:s", time()+FPCTIME)." GMT");
-			header("Cache-Control: max-age="+FPCTIME);
-			header("X-Accel-Expires: "+FPCTIME);
+			header("Expires: ".gmdate("D, d M Y H:i:s", time()+$htime)." GMT");
+			header("Cache-Control: max-age="+$htime);
+			header("X-Accel-Expires: "+$htime);
 
 			
 			if (file_exists(FPCFILE)) {
