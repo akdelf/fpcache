@@ -48,11 +48,11 @@
 			else
 				$htime = FPCTIME;
 
-			header("Expires: ".gmdate("D, d M Y H:i:s", time()+$htime)." GMT");
-			header("Cache-Control: max-age=$htime");
 			header("X-Accel-Expires: $htime");
-
-
+			header("Cache-Control: max-age=$htime");
+			header("Expires: ".gmdate("D, d M Y H:i:s", time()+$htime)." GMT");
+			
+						
 			if (file_exists(FPCFILE)) {
 								
 				if (FPCTIME == -1) {
